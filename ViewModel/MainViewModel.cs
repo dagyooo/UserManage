@@ -8,7 +8,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Threading;
 using UserManage.Common;
 using UserManage.Model;
 using UserManage.Service;
@@ -70,23 +69,12 @@ namespace UserManage.ViewModel
         [RelayCommand]
         private void SearchUser()
         {
-            Task.Run(async () =>
+            var item = mMainService.UserList(SWName, SWPhoneNo, SWEmail);
+            
+            if (item != null)
             {
-                var item = await Task.Run(() =>
-                {
-                    var result = mMainService.UserList(SWName, SWPhoneNo, SWEmail);
-                    Task.Delay(1000).Wait(); // 1초 고의지연
-                    return result;
-                });
-               
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    if (item != null)
-                    {
-                        UserList = item;
-                    }
-                });
-            });
+                UserList = item;
+            }
         }
 
         /// <summary>
@@ -125,34 +113,27 @@ namespace UserManage.ViewModel
                 return;
             }
 
-            Task.Run(async () =>
+            Boolean bRet = mMainService.AddUserList(AddUserName, AddUserAge, AddUserPhoneNo, AddUserEmail);
+
+            if(bRet)
             {
-                var bRet = await Task.Run(() =>
-                {
-                    Boolean result = mMainService.AddUserList(AddUserName, AddUserAge, AddUserPhoneNo, AddUserEmail);
-                    Task.Delay(1000).Wait(); // 1초 고의 지연
-                    return result;
-                });
+                MessageBox.Show("등록되었습니다.");
+        
+                SWName = AddUserName;
+                SWPhoneNo = AddUserPhoneNo;
+                SWEmail = AddUserEmail;
 
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    if (bRet)
-                    {
-                        MessageBox.Show("등록되었습니다.");
+                AddUserName = String.Empty;
+                AddUserAge = String.Empty;
+                AddUserPhoneNo = String.Empty;
+                AddUserEmail = String.Empty;
 
-                        AddUserName = String.Empty;
-                        AddUserAge = String.Empty;
-                        AddUserPhoneNo = String.Empty;
-                        AddUserEmail = String.Empty;
-
-                        SearchAllUser();   // 성공 시 다시 전체 조회
-                    }
-                    else
-                    {
-                        MessageBox.Show("등록에 실패하였습니다.");
-                    }
-                });
-            });
+                SearchUser();   // 성공 시 다시 조회
+            }
+            else
+            {
+                MessageBox.Show("등록에 실패하였습니다.");
+            }
         }
 
         /// <summary>
@@ -165,29 +146,17 @@ namespace UserManage.ViewModel
             {
                 if ("Y".Equals(SelectedUser.CanDeleteYn))
                 {
-                    Task.Run(async () =>
+                    Boolean bRet = mMainService.DeleteUserList(SelectedUser.Id);
+
+                    if (bRet)
                     {
-                        var bRet = await Task.Run(() =>
-                        {
-                            Boolean result = mMainService.DeleteUserList(SelectedUser.Id);
-                            Task.Delay(1000).Wait(); // 1초 고의 지연
-                            return result;
-                        });
-
-                        Application.Current.Dispatcher.Invoke(() =>
-                        {
-                            if (bRet)
-                            {
-                                MessageBox.Show("삭제되었습니다.");
-                                SearchUser(); // 성공 시 다시 조회
-                            }
-                            else
-                            {
-                                MessageBox.Show("삭제에 실패하였습니다.");
-                            }
-                        });
-                    });
-
+                        MessageBox.Show("삭제되었습니다.");
+                        SearchUser();   // 성공 시 다시 조회
+                    }
+                    else
+                    {
+                        MessageBox.Show("삭제에 실패하였습니다.");
+                    }
                 }
                 else
                 {
