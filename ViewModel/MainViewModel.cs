@@ -27,7 +27,7 @@ namespace UserManage.ViewModel
         private String? _SWPhoneNo; // 검색어-연락처
 
         [ObservableProperty]
-        private String? _SWEmail;   // 검색어-이메일
+        private String? _SWEmail;   // 검색어-이메일 
 
         [ObservableProperty]
         private Boolean _IsAdd = false;
