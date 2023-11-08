@@ -47,7 +47,6 @@ namespace UserManage.SQL
                         }
                     }
 
-                    connection.Close();
                 }
             }
             catch (Exception e)
@@ -74,15 +73,17 @@ namespace UserManage.SQL
                 using (var connection = new SqliteConnection(DB_CONNECTION_STR))
                 {
                     connection.Open();
-
-                    String aQuery = $"DELETE FROM {sTableName} WHERE {sWhereClause}";
-
-                    using (var command = connection.CreateCommand())
+                    using (var transaction = connection.BeginTransaction()) // 트랜잭션 시작
                     {
-                        command.CommandText = aQuery;
-                        int nRet = command.ExecuteNonQuery();
-                        connection.Close();
-                        return nRet;
+                        String aQuery = $"DELETE FROM {sTableName} WHERE {sWhereClause}";
+
+                        using (var command = connection.CreateCommand())
+                        {
+                            command.CommandText = aQuery;
+                            int nRet = command.ExecuteNonQuery();
+                            transaction.Commit();
+                            return nRet;
+                        }
                     }
                 }
             }
@@ -110,21 +111,24 @@ namespace UserManage.SQL
                 {
                     connection.Open();
 
-                    String sColumnsStr = (arrColumns != null && arrColumns.Length > 0) ? String.Join(", ", arrColumns) : "*";
-                    String sValuesStr = (accValues != null && accValues.Length > 0) ? String.Join(", ", accValues) : "*";
-
-                    String aQuery = $"INSERT INTO {sTableName} ({sColumnsStr}) VALUES ({sValuesStr})";
-
-                    using (var command = connection.CreateCommand())
+                    using (var transaction = connection.BeginTransaction()) // 트랜잭션 시작
                     {
-                        command.CommandText = aQuery;
-                        int nRet = command.ExecuteNonQuery();
-                        connection.Close();
-                        return nRet;
+                        String sColumnsStr = (arrColumns != null && arrColumns.Length > 0) ? String.Join(", ", arrColumns) : "*";
+                        String sValuesStr = (accValues != null && accValues.Length > 0) ? String.Join(", ", accValues) : "*";
+
+                        String aQuery = $"INSERT INTO {sTableName} ({sColumnsStr}) VALUES ({sValuesStr})";
+
+                        using (var command = connection.CreateCommand())
+                        {
+                            command.CommandText = aQuery;
+                            int nRet = command.ExecuteNonQuery();
+                            transaction.Commit();
+                            return nRet;
+                        }
                     }
 
+                    }
                 }
-            }
             catch (Exception e)
             {
                 Console.WriteLine(e.StackTrace);
