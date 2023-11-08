@@ -49,15 +49,7 @@
 			<Setter Property="Foreground" Value="#000"/>
 			<Setter Property="FontSize" Value="14"/>
 			<Setter Property="BorderThickness" Value="0"/>
-			<!--<Setter Property="Template">
-				<Setter.Value>
-					<ControlTemplate TargetType="{x:Type TextBox}">
-						<Border BorderBrush="#fff" BorderThickness="0" CornerRadius="5" Background="#fff">
-							<TextBox Background="Transparent"  BorderThickness="0" Padding="5" Foreground="#000" FontSize="14"/>
-						</Border>
-					</ControlTemplate>
-				</Setter.Value>
-			</Setter>-->
+
 		</Style>
 		<Style x:Key="InputAddBox" TargetType="{x:Type TextBox}">
 			<Setter Property="Height" Value="30" />
@@ -69,15 +61,6 @@
 			<Setter Property="Foreground" Value="#000"/>
 			<Setter Property="FontSize" Value="14"/>
 			<Setter Property="BorderThickness" Value="0"/>
-			<!--<Setter Property="Template">
-				<Setter.Value>
-					<ControlTemplate TargetType="{x:Type TextBox}">
-						<Border BorderBrush="#fff" BorderThickness="2" CornerRadius="5" Background="#fff">
-							<TextBox Background="Transparent" BorderThickness="0" Padding="5" Foreground="#000" FontSize="14"/>
-						</Border>
-					</ControlTemplate>
-				</Setter.Value>
-			</Setter>-->
 		</Style>
 		<Style x:Key="SearchButton" TargetType="{x:Type Button}">
 			<Setter Property="Background" Value="White"/>
@@ -168,27 +151,12 @@
 				</DockPanel>
 			</DockPanel>
 			<DockPanel Height="auto" DockPanel.Dock="Left">
-				<!--<StackPanel DockPanel.Dock="Top" HorizontalAlignment="Right" Orientation="Horizontal">
-					<Button Content="ㅡ" Margin="5"    Foreground="White" Background="Transparent" BorderBrush="Transparent" FontSize="18" />
-					<Button Content="□" Margin="5"    Foreground="White" Background="Transparent" BorderBrush="Transparent" FontSize="18" />
-					<Button Content="Ｘ" Margin="5, 3" Foreground="White" Background="Transparent" BorderBrush="Transparent" FontSize="18" />
-				</StackPanel>-->
 				<StackPanel DockPanel.Dock="Top" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="30">
 					<TextBlock Text="사용자" Foreground="White" FontSize="28" FontWeight="Bold"/>
 					<TextBlock Text="관리프로그램" Foreground="White" FontSize="28" FontWeight="Bold"/>
 				</StackPanel>
 			</DockPanel>
 			<DockPanel DockPanel.Dock="Top" LastChildFill="False" Height="88" >
-				<!--<StackPanel DockPanel.Dock="Top" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0, 10, 0, 20">
-					<DockPanel Margin="0,0,0,0">
-						<StackPanel Margin="10, 0">
-							<Button Style="{StaticResource DefaultButton}" Content="사용자 추가하기" Width="200" Command="{Binding OpenAddUserCommand}"/>
-						</StackPanel>
-						--><!--<StackPanel Margin="10, 0">
-							<Button Style="{StaticResource DefaultButton}" Content="선택한 사용자 삭제" Width="200" Command="{Binding DeleteUserCommand}"/>
-						</StackPanel>--><!--
-					</DockPanel>
-				</StackPanel>-->
 				<DockPanel>
 					<StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center" Margin="10, 20">
 						<TextBlock Text="이름 " VerticalAlignment="Center" Foreground="White" FontSize="16" FontWeight="Bold"/>

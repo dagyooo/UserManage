@@ -24,29 +24,38 @@ namespace UserManage.SQL
         /// <param name="sWhere">조건절</param>
         /// <param name="sOrderby">정렬</param>
         /// <returns></returns>
-        public static DataTable ExecuteSelectQuery(String sTableName, String[] arrColumns, String sWhere = "", String sOrderby = "")
+        public static DataTable? ExecuteSelectQuery(String sTableName, String[] arrColumns, String sWhere = "", String sOrderby = "")
         {
             DataTable dataTable = new DataTable();
-            using (var connection = new SqliteConnection(DB_CONNECTION_STR))
+
+            try
             {
-                connection.Open();
-
-                String sColumnsStr = (arrColumns != null && arrColumns.Length > 0) ? String.Join(", ", arrColumns) : "*";
-                String sQuery = $"SELECT {sColumnsStr} FROM {sTableName} {sWhere} {sOrderby}";
-
-                using (var command = connection.CreateCommand())
+                using (var connection = new SqliteConnection(DB_CONNECTION_STR))
                 {
-                    command.CommandText = sQuery;
+                    connection.Open();
 
-                    using (var reader = command.ExecuteReader())
+                    String sColumnsStr = (arrColumns != null && arrColumns.Length > 0) ? String.Join(", ", arrColumns) : "*";
+                    String sQuery = $"SELECT {sColumnsStr} FROM {sTableName} {sWhere} {sOrderby}";
+
+                    using (var command = connection.CreateCommand())
                     {
-                        dataTable.Load(reader);
+                        command.CommandText = sQuery;
+
+                        using (var reader = command.ExecuteReader())
+                        {
+                            dataTable.Load(reader);
+                        }
                     }
+
+                    connection.Close();
                 }
-
-                connection.Close();
             }
-
+            catch (Exception e)
+            {
+                Console.WriteLine(e.StackTrace );
+                Console.WriteLine(e.Message);
+                return null;
+            }
            
 
             return dataTable;
@@ -60,19 +69,28 @@ namespace UserManage.SQL
         /// <returns></returns>
         public static int ExecuteDeleteQuery(String sTableName, String sWhereClause = "")
         {
-            using (var connection = new SqliteConnection(DB_CONNECTION_STR))
+            try
             {
-                connection.Open();
-
-                String aQuery = $"DELETE FROM {sTableName} WHERE {sWhereClause}";
-
-                using (var command = connection.CreateCommand())
+                using (var connection = new SqliteConnection(DB_CONNECTION_STR))
                 {
-                    command.CommandText = aQuery;
-                    int nRet = command.ExecuteNonQuery();
-                    connection.Close();
-                    return nRet;
+                    connection.Open();
+
+                    String aQuery = $"DELETE FROM {sTableName} WHERE {sWhereClause}";
+
+                    using (var command = connection.CreateCommand())
+                    {
+                        command.CommandText = aQuery;
+                        int nRet = command.ExecuteNonQuery();
+                        connection.Close();
+                        return nRet;
+                    }
                 }
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.StackTrace);
+                Console.WriteLine(e.Message);
+                return -1;
             }
         }
 
@@ -86,23 +104,32 @@ namespace UserManage.SQL
         /// <returns></returns>
         public static int ExecuteInsertQuery(String sTableName, String[] arrColumns, String[] accValues)
         {
-            using (var connection = new SqliteConnection(DB_CONNECTION_STR))
+            try
             {
-                connection.Open();
-
-                String sColumnsStr = (arrColumns != null && arrColumns.Length > 0) ? String.Join(", ", arrColumns) : "*";
-                String sValuesStr = (accValues != null && accValues.Length > 0) ? String.Join(", ", accValues) : "*";
-
-                String aQuery = $"INSERT INTO {sTableName} ({sColumnsStr}) VALUES ({sValuesStr})";
-
-                using (var command = connection.CreateCommand())
+                using (var connection = new SqliteConnection(DB_CONNECTION_STR))
                 {
-                    command.CommandText = aQuery;
-                    int nRet = command.ExecuteNonQuery();
-                    connection.Close();
-                    return nRet;
+                    connection.Open();
+
+                    String sColumnsStr = (arrColumns != null && arrColumns.Length > 0) ? String.Join(", ", arrColumns) : "*";
+                    String sValuesStr = (accValues != null && accValues.Length > 0) ? String.Join(", ", accValues) : "*";
+
+                    String aQuery = $"INSERT INTO {sTableName} ({sColumnsStr}) VALUES ({sValuesStr})";
+
+                    using (var command = connection.CreateCommand())
+                    {
+                        command.CommandText = aQuery;
+                        int nRet = command.ExecuteNonQuery();
+                        connection.Close();
+                        return nRet;
+                    }
+
                 }
-                
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.StackTrace);
+                Console.WriteLine(e.Message);
+                return -1;
             }
         }
 

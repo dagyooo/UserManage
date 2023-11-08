@@ -53,6 +53,7 @@ namespace UserManage.ViewModel
         {
             mMainService = new MainService();
             UserList = new ObservableCollection<User>();
+
             InitData();
         }
 
@@ -84,6 +85,10 @@ namespace UserManage.ViewModel
                     if (item != null)
                     {
                         UserList = item;
+                    }
+                    else
+                    {
+                        MessageBox.Show("데이터 불러오기를 실패하였습니다.");
                     }
                 });
             });

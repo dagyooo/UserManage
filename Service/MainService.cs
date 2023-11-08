@@ -59,27 +59,35 @@ namespace UserManage.Service
                                                             ,Codes.TableColumn. PHONENO, Codes.TableColumn.EMAIL, Codes.TableColumn.REGDT, Codes.TableColumn.CANDELETEYN };
 
                 // DB 조회하기
-                DataTable dtUser = DBUtil.ExecuteSelectQuery(Codes.TableName.USERS, arrColumns, sWhereStr);
+                DataTable? dtUser = DBUtil.ExecuteSelectQuery(Codes.TableName.USERS, arrColumns, sWhereStr);
 
-                foreach (DataRow row in dtUser.Rows)
+                if (dtUser != null)
                 {
-                    User user = new User
+                    foreach (DataRow row in dtUser.Rows)
                     {
-                        Id = Convert.ToInt32(row[Codes.TableColumn.ID]),
-                        State = Convert.ToInt32(row[Codes.TableColumn.STATE]),
-                        Name = row[Codes.TableColumn.NAME].ToString() ?? "",
-                        Age = Convert.ToInt32(row[Codes.TableColumn.AGE]),
-                        PhoneNo = row[Codes.TableColumn.PHONENO].ToString() ?? "",
-                        Email = row[Codes.TableColumn.EMAIL].ToString() ?? "",
-                        RegDt = row[Codes.TableColumn.REGDT].ToString() ?? "",
-                        CanDeleteYn = row[Codes.TableColumn.CANDELETEYN].ToString() ?? "Y"
-                    };
-                    colUser.Add(user);
+                        User user = new User
+                        {
+                            Id = Convert.ToInt32(row[Codes.TableColumn.ID]),
+                            State = Convert.ToInt32(row[Codes.TableColumn.STATE]),
+                            Name = row[Codes.TableColumn.NAME].ToString() ?? "",
+                            Age = Convert.ToInt32(row[Codes.TableColumn.AGE]),
+                            PhoneNo = row[Codes.TableColumn.PHONENO].ToString() ?? "",
+                            Email = row[Codes.TableColumn.EMAIL].ToString() ?? "",
+                            RegDt = row[Codes.TableColumn.REGDT].ToString() ?? "",
+                            CanDeleteYn = row[Codes.TableColumn.CANDELETEYN].ToString() ?? "Y"
+                        };
+                        colUser.Add(user);
+                    }
+                }
+                else
+                {
+                    return null;
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.StackTrace);
+                Console.WriteLine(ex.Message);
                 return null;
             }
 
