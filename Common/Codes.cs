@@ -28,7 +28,7 @@ namespace UserManage.Common
 
         public static class TableColumn
         {
-            public static String[] USERS_COLUMNS = new String[] { ID, STATE, NAME, AGE, PHONENO, EMAIL, REGDT, CANDELETEYN };
+            
 
             public const String ID = "Id";
             public const String STATE = "State";

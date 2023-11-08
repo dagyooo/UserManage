@@ -26,5 +26,13 @@ namespace UserManage
             InitializeComponent();
             this.DataContext = new MainViewModel();
         }
+
+        private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            if ((e.Text) == null || !(e.Text).All(char.IsDigit))
+            {
+                e.Handled = true;
+            }
+        }
     }
 }

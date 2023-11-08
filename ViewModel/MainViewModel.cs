@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using UserManage.Common;
 using UserManage.Model;
 using UserManage.Service;
@@ -35,7 +36,7 @@ namespace UserManage.ViewModel
         [ObservableProperty]
         private String? _AddUserName;       // 사용자 추가-이름
 
-       [ObservableProperty]
+        [ObservableProperty]
         private String? _AddUserAge;            // 사용자 추가-나이
 
         [ObservableProperty]
@@ -44,6 +45,8 @@ namespace UserManage.ViewModel
         [ObservableProperty]
         private String? _AddUserEmail;      // 사용자 추가-이메일
 
+        [ObservableProperty]
+        private User? _SelectedUser;        // 선택한 유저
 
         public MainViewModel()
         {
@@ -60,43 +63,110 @@ namespace UserManage.ViewModel
             SearchUser();
         }
 
+        /// <summary>
+        /// 조회 커맨드
+        /// </summary>
         [RelayCommand]
         private void SearchUser()
         {
-            mMainService.UserList(SWName, SWPhoneNo, SWEmail, UserList);
+            var item = mMainService.UserList(SWName, SWPhoneNo, SWEmail);
+            
+            if (item != null)
+            {
+                UserList = item;
+            }
         }
 
+        /// <summary>
+        /// 전체 조회 커맨드
+        /// </summary>
+        [RelayCommand]
+        private void SearchAllUser()
+        {
+            SWName = String.Empty;
+            SWPhoneNo = String.Empty;
+            SWEmail = String.Empty;
+
+            SearchUser();
+        }
+
+        /// <summary>
+        /// 추가 열기 커맨드
+        /// </summary>
         [RelayCommand]
         private void OpenAddUser()
         {
             IsAdd = !IsAdd;
         }
 
+
+        /// <summary>
+        /// 사용자 추가 커맨드
+        /// </summary>
+        [RelayCommand]
+        private void AddUser()
+        {
+            // 입력값 VALID 체크
+            if (String.IsNullOrEmpty(AddUserName) || String.IsNullOrEmpty(AddUserAge) || String.IsNullOrEmpty(AddUserPhoneNo))
+            {
+                MessageBox.Show("이름, 나이, 연락처는 필수항목입니다.");
+                return;
+            }
+
+            Boolean bRet = mMainService.AddUserList(AddUserName, AddUserAge, AddUserPhoneNo, AddUserEmail);
+
+            if(bRet)
+            {
+                MessageBox.Show("등록되었습니다.");
+        
+                SWName = AddUserName;
+                SWPhoneNo = AddUserPhoneNo;
+                SWEmail = AddUserEmail;
+
+                AddUserName = String.Empty;
+                AddUserAge = String.Empty;
+                AddUserPhoneNo = String.Empty;
+                AddUserEmail = String.Empty;
+
+                SearchUser();   // 성공 시 다시 조회
+            }
+            else
+            {
+                MessageBox.Show("등록에 실패하였습니다.");
+            }
+        }
+
+        /// <summary>
+        /// 사용자 삭제 커맨드
+        /// </summary>
         [RelayCommand]
         private void DeleteUser()
         {
-
-        }
-
-        partial void OnAddUserAgeChanging(String? oldValue, String? newValue)
-        {
-            if(!IsNumber(newValue))
+            if(SelectedUser != null)
             {
-                AddUserAge = oldValue;
-                OnPropertyChanged(nameof(AddUserAge));
+                if ("Y".Equals(SelectedUser.CanDeleteYn))
+                {
+                    Boolean bRet = mMainService.DeleteUserList(SelectedUser.Id);
+
+                    if (bRet)
+                    {
+                        MessageBox.Show("삭제되었습니다.");
+                        SearchUser();   // 성공 시 다시 조회
+                    }
+                    else
+                    {
+                        MessageBox.Show("삭제에 실패하였습니다.");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("삭제할 수 없는 사용자입니다.");
+                }
+            }
+            else
+            {
+                MessageBox.Show("삭제할 사용자를 선택해 주세요.");
             }
         }
-
-        private bool IsNumber(String? text)
-        {
-            if (int.TryParse(text, out int result))
-            {
-                return true; // 숫자
-            }
-            return false; // 숫자가 아닐때
-        }
-
-
-
     }
 }

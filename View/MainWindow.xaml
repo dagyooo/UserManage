@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:UserManage"
 		xmlns:cvt="clr-namespace:UserManage.Converter"
         mc:Ignorable="d"
-        Title="사용자 관리 시스템" Height="800" Width="1100" WindowStartupLocation="CenterScreen">
+        Title="사용자 관리 시스템" Height="800" Width="1200" WindowStartupLocation="CenterScreen">
 	<Window.Resources>
 		<cvt:StateToTextConverter x:Key="StateConverter" />
 		<cvt:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
@@ -40,102 +40,209 @@
 			</Style.Triggers>
 		</Style>
 		<Style x:Key="InputBox" TargetType="{x:Type TextBox}">
-			<Setter Property="Background" Value="White" />
 			<Setter Property="Height" Value="30" />
 			<Setter Property="HorizontalContentAlignment" Value="Left" />
 			<Setter Property="VerticalContentAlignment" Value="Center" />
+			<Setter Property="HorizontalContentAlignment" Value="Left" />
+			<Setter Property="VerticalContentAlignment" Value="Center" />
+			<Setter Property="Background" Value="Transparent"/>
+			<Setter Property="Foreground" Value="#000"/>
+			<Setter Property="FontSize" Value="14"/>
+			<Setter Property="BorderThickness" Value="0"/>
+			<!--<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type TextBox}">
+						<Border BorderBrush="#fff" BorderThickness="0" CornerRadius="5" Background="#fff">
+							<TextBox Background="Transparent"  BorderThickness="0" Padding="5" Foreground="#000" FontSize="14"/>
+						</Border>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>-->
+		</Style>
+		<Style x:Key="InputAddBox" TargetType="{x:Type TextBox}">
+			<Setter Property="Height" Value="30" />
+			<Setter Property="HorizontalContentAlignment" Value="Left" />
+			<Setter Property="VerticalContentAlignment" Value="Center" />
+			<Setter Property="HorizontalContentAlignment" Value="Left" />
+			<Setter Property="VerticalContentAlignment" Value="Center" />
+			<Setter Property="Background" Value="Transparent"/>
+			<Setter Property="Foreground" Value="#000"/>
+			<Setter Property="FontSize" Value="14"/>
+			<Setter Property="BorderThickness" Value="0"/>
+			<!--<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type TextBox}">
+						<Border BorderBrush="#fff" BorderThickness="2" CornerRadius="5" Background="#fff">
+							<TextBox Background="Transparent" BorderThickness="0" Padding="5" Foreground="#000" FontSize="14"/>
+						</Border>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>-->
+		</Style>
+		<Style x:Key="SearchButton" TargetType="{x:Type Button}">
+			<Setter Property="Background" Value="White"/>
+			<Setter Property="Foreground" Value="#2767A3"/>
+			<Setter Property="BorderThickness" Value="0"/>
+			<Setter Property="Height" Value="80"/>
+			<Setter Property="Width" Value="60"/>
+			<Setter Property="FontSize" Value="16"/>
+			<Setter Property="FontWeight" Value="ExtraBold"/>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="Button">
+						<Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="3">
+							<ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
 		</Style>
 		<Style x:Key="DefaultButton" TargetType="{x:Type Button}">
-			<Setter Property="BorderBrush" Value="DarkGray"/>
-			<Setter Property="Background" Value="DimGray"/>
-			<Setter Property="Height" Value="40"/>
-			<Setter Property="Width" Value="100"/>
-			<Setter Property="FontWeight" Value="ExtraBold"/>
-			<Setter Property="FontSize" Value="17"/>
-			<Setter Property="Foreground" Value="White"/>
-			
+			<Setter Property="Background" Value="#5695CF"/>
+			<Setter Property="Foreground" Value="#fff"/>
+			<Setter Property="BorderThickness" Value="0"/>
+			<Setter Property="Height" Value="37"/>
+			<Setter Property="Width" Value="60"/>
+			<Setter Property="FontSize" Value="14"/>
+			<Setter Property="FontWeight" Value="Bold"/>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="Button">
+						<Border Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="3">
+							<ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
 		</Style>
 	</Window.Resources>
-	<Grid>
+	<Grid Background="#2767A3">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="auto"/>
 			<RowDefinition Height="1*"/>
 		</Grid.RowDefinitions>
-		<DockPanel Grid.Row="0"   Background="#1d3557">
-			<DockPanel Height="auto" DockPanel.Dock="Top">
+		<DockPanel Grid.Row="0">
+			<DockPanel DockPanel.Dock="Bottom" Background="#f1f1f1" Visibility="{Binding IsAdd, Converter={StaticResource BooleanToVisibilityConverter}}">
+				<DockPanel DockPanel.Dock="Top" HorizontalAlignment="Center" Margin="10,10, 10, 0" VerticalAlignment="Bottom">
+					<TextBlock Text="정보를 입력해 주세요." FontSize="16" FontWeight="Bold" Foreground="#000"/>
+				</DockPanel>
+				<DockPanel DockPanel.Dock="Top" LastChildFill="False" HorizontalAlignment="Center" Margin="0">
+					
+					<StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center" Margin="20, 20, 5, 20">
+						<TextBlock Text="이름 " VerticalAlignment="Center"  FontSize="16" FontWeight="Bold"/>
+						<Border BorderBrush="#fff" BorderThickness="0" CornerRadius="5" Background="#fff">
+							<TextBox Width="100" Style="{StaticResource InputAddBox}" Text="{Binding AddUserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+							</TextBox>
+						</Border>
+					</StackPanel>
+					<StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center" Margin="5, 20">
+						<TextBlock Text="나이 " VerticalAlignment="Center" FontSize="16" FontWeight="Bold"/>
+						<Border BorderBrush="#fff" BorderThickness="0" CornerRadius="5" Background="#fff">
+							<TextBox Width="100" Style="{StaticResource InputAddBox}" Text="{Binding AddUserAge, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="TextBox_PreviewTextInput">
+							</TextBox>
+						</Border>
+					</StackPanel>
+					<StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center" Margin="5, 20">
+						<TextBlock Text="연락처 " VerticalAlignment="Center" FontSize="16" FontWeight="Bold"/>
+						<Border BorderBrush="#fff" BorderThickness="0" CornerRadius="5" Background="#fff">
+							<TextBox Width="150" Style="{StaticResource InputAddBox}" Text="{Binding AddUserPhoneNo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+							</TextBox>
+						</Border>
+					</StackPanel>
+					<StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center" Margin="5, 20">
+						<TextBlock Text="이메일 " VerticalAlignment="Center" FontSize="16" FontWeight="Bold"/>
+						<Border BorderBrush="#fff" BorderThickness="0" CornerRadius="5" Background="#fff">
+							<TextBox Width="150" Style="{StaticResource InputAddBox}" Text="{Binding AddUserEmail, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+							</TextBox>
+						</Border>
+					</StackPanel>
+					<StackPanel DockPanel.Dock="Right" VerticalAlignment="Center" Margin="10" >
+						<Button Style="{StaticResource DefaultButton}" Width="100" Content="추가" Command="{Binding AddUserCommand}"/>
+					</StackPanel>
+				</DockPanel>
+			</DockPanel>
+			<DockPanel Height="auto" DockPanel.Dock="Left">
 				<!--<StackPanel DockPanel.Dock="Top" HorizontalAlignment="Right" Orientation="Horizontal">
 					<Button Content="ㅡ" Margin="5"    Foreground="White" Background="Transparent" BorderBrush="Transparent" FontSize="18" />
 					<Button Content="□" Margin="5"    Foreground="White" Background="Transparent" BorderBrush="Transparent" FontSize="18" />
 					<Button Content="Ｘ" Margin="5, 3" Foreground="White" Background="Transparent" BorderBrush="Transparent" FontSize="18" />
 				</StackPanel>-->
-				<StackPanel DockPanel.Dock="Top" HorizontalAlignment="Center">
-					<TextBlock Text="사용자 관리 프로그램" Foreground="White" FontSize="30" FontWeight="Bold"/>
+				<StackPanel DockPanel.Dock="Top" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="30">
+					<TextBlock Text="사용자" Foreground="White" FontSize="28" FontWeight="Bold"/>
+					<TextBlock Text="관리프로그램" Foreground="White" FontSize="28" FontWeight="Bold"/>
 				</StackPanel>
 			</DockPanel>
-			<DockPanel DockPanel.Dock="Top" LastChildFill="False"> 
-				<StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="20">
-					<TextBlock Text="이름 " VerticalAlignment="Center" Foreground="White" FontSize="16" FontWeight="Bold"/>
-					<TextBox Width="100" Style="{StaticResource InputBox}" Text="{Binding SWName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-						<TextBox.InputBindings>
-							<KeyBinding Key="Enter" Command="{Binding SearchUserCommand}" />
-						</TextBox.InputBindings>
-					</TextBox>
-				</StackPanel>
-				<StackPanel Orientation="Horizontal" VerticalAlignment="Center" Width="auto" Margin="20" >
-					<TextBlock Text="연락처 " VerticalAlignment="Center" Foreground="White" FontSize="16" FontWeight="Bold"/>
-					<TextBox  Width="150" Style="{StaticResource InputBox}" Text="{Binding SWPhoneNo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-						<TextBox.InputBindings>
-							<KeyBinding Key="Enter" Command="{Binding SearchUserCommand}" />
-						</TextBox.InputBindings>
-					</TextBox>
-				</StackPanel>
-				<StackPanel Orientation="Horizontal" Width="auto" Margin="20">
-					<TextBlock Text="이메일 " VerticalAlignment="Center" Foreground="White" FontSize="16" FontWeight="Bold"/>
-					<TextBox Width="150" Style="{StaticResource InputBox}" Text="{Binding SWEmail, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-						<TextBox.InputBindings>
-							<KeyBinding Key="Enter" Command="{Binding SearchUserCommand}" />
-						</TextBox.InputBindings>
-					</TextBox>
-				</StackPanel>
-
-				<StackPanel DockPanel.Dock="Right" VerticalAlignment="Center" Margin="10, 0">
-					<Button Style="{StaticResource DefaultButton}" Content="검색" Command="{Binding SearchUserCommand}"/>
-				</StackPanel>
-				<StackPanel DockPanel.Dock="Right" VerticalAlignment="Center" Margin="10, 0">
-					<Button Style="{StaticResource DefaultButton}" Content="삭제" Command="{Binding DeleteUserCommand}"/>
-				</StackPanel>
-				<StackPanel DockPanel.Dock="Right" VerticalAlignment="Center" Margin="10, 0">
-					<Button Style="{StaticResource DefaultButton}" Content="추가" Command="{Binding OpenAddUserCommand}"/>
-				</StackPanel>
-			</DockPanel>
-			<DockPanel DockPanel.Dock="Top" Background="#a8dadc" Visibility="{Binding IsAdd, Converter={StaticResource BooleanToVisibilityConverter}}">
-				<StackPanel DockPanel.Dock="Top" HorizontalAlignment="Center">
-					<TextBlock Margin="0, 10, 0, 0" Text="사용자 추가"  FontSize="18" FontWeight="Bold"/>
-				</StackPanel>
-				<DockPanel DockPanel.Dock="Top" LastChildFill="False" HorizontalAlignment="Center" >
-					<StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center" Margin="20">
-						<TextBlock Text="이름 " VerticalAlignment="Center"  FontSize="16" FontWeight="Bold"/>
-						<TextBox Width="100" Style="{StaticResource InputBox}">
-						</TextBox>
+			<DockPanel DockPanel.Dock="Top" LastChildFill="False" Height="88" >
+				<!--<StackPanel DockPanel.Dock="Top" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0, 10, 0, 20">
+					<DockPanel Margin="0,0,0,0">
+						<StackPanel Margin="10, 0">
+							<Button Style="{StaticResource DefaultButton}" Content="사용자 추가하기" Width="200" Command="{Binding OpenAddUserCommand}"/>
+						</StackPanel>
+						--><!--<StackPanel Margin="10, 0">
+							<Button Style="{StaticResource DefaultButton}" Content="선택한 사용자 삭제" Width="200" Command="{Binding DeleteUserCommand}"/>
+						</StackPanel>--><!--
+					</DockPanel>
+				</StackPanel>-->
+				<DockPanel>
+					<StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center" Margin="10, 20">
+						<TextBlock Text="이름 " VerticalAlignment="Center" Foreground="White" FontSize="16" FontWeight="Bold"/>
+						<Border BorderBrush="#fff" BorderThickness="0" CornerRadius="5" Background="#fff">
+							<TextBox Width="100"  Style="{StaticResource InputBox}" Text="{Binding SWName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+								<TextBox.InputBindings>
+									<KeyBinding Key="Enter" Command="{Binding SearchUserCommand}" />
+								</TextBox.InputBindings>
+							</TextBox>
+						</Border>
 					</StackPanel>
-					<StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center" Margin="20">
-						<TextBlock Text="나이 " VerticalAlignment="Center" FontSize="16" FontWeight="Bold"/>
-						<TextBox Width="100" Style="{StaticResource InputBox}" Text="{Binding AddUserAge, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-						</TextBox>
+					<StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center" Width="auto" Margin="10, 20" >
+						<TextBlock Text="연락처 " VerticalAlignment="Center" Foreground="White" FontSize="16" FontWeight="Bold"/>
+						<Border BorderBrush="#fff" BorderThickness="0" CornerRadius="5" Background="#fff">
+							<TextBox  Width="150" Style="{StaticResource InputBox}" Text="{Binding SWPhoneNo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+								<TextBox.InputBindings>
+									<KeyBinding Key="Enter" Command="{Binding SearchUserCommand}" />
+								</TextBox.InputBindings>
+							</TextBox>
+						</Border>
 					</StackPanel>
-					<StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center" Margin="20">
-						<TextBlock Text="연락처 " VerticalAlignment="Center" FontSize="16" FontWeight="Bold"/>
-						<TextBox Width="150" Style="{StaticResource InputBox}">
-						</TextBox>
+					<StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center"  Width="auto" Margin="10, 20, 20, 20">
+						<TextBlock Text="이메일 " VerticalAlignment="Center" Foreground="White" FontSize="16" FontWeight="Bold"/>
+						<Border BorderBrush="#fff" BorderThickness="0" CornerRadius="5" Background="#fff">
+							<TextBox Width="150" Style="{StaticResource InputBox}" Text="{Binding SWEmail, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+								<TextBox.InputBindings>
+									<KeyBinding Key="Enter" Command="{Binding SearchUserCommand}" />
+								</TextBox.InputBindings>
+							</TextBox>
+						</Border>
 					</StackPanel>
-					<StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center" Margin="20">
-						<TextBlock Text="이메일 " VerticalAlignment="Center" FontSize="16" FontWeight="Bold"/>
-						<TextBox Width="150" Style="{StaticResource InputBox}">
-						</TextBox>
-					</StackPanel>
-					<StackPanel DockPanel.Dock="Right" VerticalAlignment="Center" Margin="10" >
-						<Button Style="{StaticResource DefaultButton}" Width="200" Content="사용자 추가"/>
-					</StackPanel>
+					<DockPanel DockPanel.Dock="Right" Margin="0, 0">
+						<StackPanel VerticalAlignment="Center" Margin="10, 0">
+							<Button Style="{StaticResource SearchButton}" Content="검색" Command="{Binding SearchUserCommand}"/>
+						</StackPanel>
+						<StackPanel VerticalAlignment="Center" Margin="10, 0">
+							<Button Style="{StaticResource SearchButton}" Command="{Binding SearchAllUserCommand}">
+								<TextBlock HorizontalAlignment="Center" TextAlignment="Center">
+										전체
+										<LineBreak/>
+										검색
+								</TextBlock>
+							</Button>
+						</StackPanel>
+						<StackPanel VerticalAlignment="Center" Margin="20, 0, 10, 0">
+							<Button Style="{StaticResource SearchButton}" Command="{Binding OpenAddUserCommand}" Background="#5695CF" Foreground="#fff">
+								<TextBlock HorizontalAlignment="Center" TextAlignment="Center">
+									사용자
+									<LineBreak/>
+									추가
+								</TextBlock>
+							</Button>
+						</StackPanel>
+					</DockPanel>
 				</DockPanel>
 			</DockPanel>
 		</DockPanel>
@@ -143,16 +250,18 @@
 			<DockPanel DockPanel.Dock="Right">
 			</DockPanel>
 			<DockPanel>
-
-				<DataGrid x:Name="dgUser"  DockPanel.Dock="Top" Background="White" ItemsSource="{Binding UserList}" GridLinesVisibility="None" ScrollViewer.CanContentScroll="True"  BorderThickness="0" CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True" BorderBrush="DarkGray"  AutoGenerateColumns="False" SelectionMode="Single" HeadersVisibility="Column">
+				<StackPanel DockPanel.Dock="Top"  Background="#2767A3">
+					<Button Margin="10,10, 10, 10" HorizontalAlignment="Right" Style="{StaticResource DefaultButton}" Content="선택한 사용자 삭제" Width="200" Command="{Binding DeleteUserCommand}"/>
+				</StackPanel>
+				<DataGrid  x:Name="dgUser"  DockPanel.Dock="Top" Background="White" ItemsSource="{Binding UserList}" SelectedItem="{Binding SelectedUser, UpdateSourceTrigger=PropertyChanged}" GridLinesVisibility="None" ScrollViewer.CanContentScroll="True"  BorderThickness="0" CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True" BorderBrush="DarkGray"  AutoGenerateColumns="False" SelectionMode="Single" HeadersVisibility="Column">
 					<DataGrid.RowHeight>30</DataGrid.RowHeight>
 					<DataGrid.ColumnHeaderStyle>
 						<Style TargetType="DataGridColumnHeader">
-							<Setter Property="Background" Value="#f1faee" />
+							<Setter Property="Background" Value="#5695cf" />
 							<Setter Property="BorderThickness" Value="0,0,0,1" />
 							<Setter Property="BorderBrush" Value="LightGray"/>
-							<Setter Property="Height" Value="30" />
-							<Setter Property="Foreground" Value="#1d3557" />
+							<Setter Property="Height" Value="50" />
+							<Setter Property="Foreground" Value="#fff" />
 							<Setter Property="FontSize" Value="18" />
 							<Setter Property="FontWeight" Value="DemiBold" />
 							<Setter Property="HorizontalContentAlignment" Value="Center"/>
@@ -167,25 +276,34 @@
 							<Setter Property="FontSize" Value="15" />
 							<Style.Triggers>
 								<Trigger Property="IsMouseOver" Value="True">
-									<Setter Property="Background" Value="#a8dadc" />
+									<Setter Property="Background" Value="#3d90dd" />
+									<Setter Property="Foreground" Value="#fff"/>
 								</Trigger>
 								<Trigger Property="IsSelected" Value="True">
-									<Setter Property="Background" Value="#a8dadc" />
+									<Setter Property="Background" Value="#3d90dd" />
 									<Setter Property="BorderThickness" Value="0,0,0,1"/>
+									<Setter Property="Foreground" Value="#fff"/>
 								</Trigger>
 							</Style.Triggers>
 						</Style>
 					</DataGrid.RowStyle>
 					<DataGrid.CellStyle>
 						<Style TargetType="DataGridCell">
-							<Setter Property="Foreground" Value="Black" />
+					
 							<Setter Property="TextBlock.TextAlignment" Value="Center" />
 							<Setter Property="VerticalAlignment" Value="Center" />
 							<Setter Property="VerticalContentAlignment" Value="Center" />
 							<Setter Property="Background" Value="Transparent" />
 							<Setter Property="BorderThickness" Value="0" />
 							<Setter Property="Height" Value="30" />
-
+							<Style.Triggers>
+								<Trigger Property="IsMouseOver" Value="True">
+									<Setter Property="Foreground" Value="#fff"/>
+								</Trigger>
+								<Trigger Property="IsSelected" Value="True">
+									<Setter Property="Foreground" Value="#fff"/>
+								</Trigger>
+							</Style.Triggers>
 						</Style>
 					</DataGrid.CellStyle>
 

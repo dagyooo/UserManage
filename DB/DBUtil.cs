@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UserManage.Model;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace UserManage.SQL
 {
@@ -42,12 +43,21 @@ namespace UserManage.SQL
                         dataTable.Load(reader);
                     }
                 }
+
+                connection.Close();
             }
+
+           
 
             return dataTable;
         }
 
-
+        /// <summary>
+        /// DELETE 문
+        /// </summary>
+        /// <param name="sTableName"></param>
+        /// <param name="sWhereClause"></param>
+        /// <returns></returns>
         public static int ExecuteDeleteQuery(String sTableName, String sWhereClause = "")
         {
             using (var connection = new SqliteConnection(DB_CONNECTION_STR))
@@ -59,11 +69,21 @@ namespace UserManage.SQL
                 using (var command = connection.CreateCommand())
                 {
                     command.CommandText = aQuery;
-                    return command.ExecuteNonQuery();
+                    int nRet = command.ExecuteNonQuery();
+                    connection.Close();
+                    return nRet;
                 }
             }
         }
 
+
+        /// <summary>
+        /// INSERT 문
+        /// </summary>
+        /// <param name="sTableName"></param>
+        /// <param name="arrColumns"></param>
+        /// <param name="accValues"></param>
+        /// <returns></returns>
         public static int ExecuteInsertQuery(String sTableName, String[] arrColumns, String[] accValues)
         {
             using (var connection = new SqliteConnection(DB_CONNECTION_STR))
@@ -78,9 +98,22 @@ namespace UserManage.SQL
                 using (var command = connection.CreateCommand())
                 {
                     command.CommandText = aQuery;
-                    return command.ExecuteNonQuery();
+                    int nRet = command.ExecuteNonQuery();
+                    connection.Close();
+                    return nRet;
                 }
+                
             }
+        }
+
+        /// <summary>
+        /// VARCHAR 형 VALUE값으로 변환
+        /// </summary>
+        /// <param name="sValue"></param>
+        /// <returns></returns>
+        public static String ConvertorStringValue(String sValue)
+        {
+            return String.IsNullOrEmpty(sValue) ? sValue : "\'" + sValue + "\'";
         }
     }
 }
